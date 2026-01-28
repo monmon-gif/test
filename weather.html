@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>About</title>
+  <title>Weather Info</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header>
-    <h1>About This Site</h1>
+    <h1>Weather Info</h1>
     <nav>
       <a href="index.html">Home</a> |
       <a href="weather.html">Weather</a> |
@@ -16,8 +16,10 @@
   </header>
 
   <div style="text-align:center; margin-top:50px;">
-    <p>このサイトはGitHub Pagesで公開されているサンプル天気サイトです。</p>
-    <p>トップページでは雲が流れるアニメーションを楽しめます。</p>
+    <button id="getWeather">天気を取得</button>
+    <div id="weather" style="margin-top:20px;"></div>
   </div>
+
+  <script src="js/weather.js"></script>
 </body>
 </html>
