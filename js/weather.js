@@ -57,6 +57,8 @@ document.getElementById("search").onclick = () => {
             <p>緯度: ${lat}</p>
             <p>経度: ${lon}</p>
         `;
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lon;
         } else {
         resultDiv.innerHTML = "住所が見つかりませんでした";
         }
