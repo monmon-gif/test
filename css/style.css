@@ -5,6 +5,48 @@ body {
   overflow: hidden;
   font-family: sans-serif;
 }
+@media (max-width: 600px) {
+  .weather-card {
+    width: 90%;
+    padding: 16px 20px;
+  }
+  .weather-temp {
+    font-size: 40px;
+  }
+  input, button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+/* 晴れ */
+body.sunny {
+  background: linear-gradient(#87ceeb, #ffffff);
+  color: #333;
+}
+
+/* 曇り */
+body.cloudy {
+  background: linear-gradient(#cfd9df, #e2ebf0);
+  color: #333;
+}
+
+/* 雨 */
+body.rain {
+  background: linear-gradient(#4b5d67, #1c2b36);
+  color: #fff;
+}
+
+/* 雪 */
+body.snow {
+  background: linear-gradient(#eef2f3, #d9e4ea);
+  color: #333;
+}
+
+/* その他・初期 */
+body.nomal {
+  background: #f5f5f5;
+  color: #333;
+}
 
 .clouds .cloud {
   position: absolute;
@@ -25,7 +67,7 @@ body {
 }
 
 header nav a {
-  color: white;
+  color: black;
   text-decoration: none;
   font-weight: bold;
   margin: 0 10px;
@@ -34,3 +76,81 @@ header nav a {
 header nav a:hover {
   text-decoration: underline;
 }
+
+.weather-card {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 24px 32px;
+  width: 320px;
+  margin: 40px auto 0;
+  text-align: center;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.weather-icon {
+  font-size: 56px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.weather-temp {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.weather-advice {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 217, 61, 0.2);
+  font-size: 14px;
+}
+
+input, button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: #4da3ff;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+body.sunny .weather-card {
+  border-top: 6px solid #ffd93d;
+}
+
+body.rain .weather-card {
+  border-top: 6px solid #4b5d67;
+}
+
+body.snow .weather-card {
+  border-top: 6px solid #bcdff1;
+}
+
+.search-area {
+  margin-bottom: 32px;
+}
+
+.weather-temp.cold {
+  color: #3a7bd5;
+}
+
+.weather-temp.hot {
+  color: #e74c3c;
+}
+

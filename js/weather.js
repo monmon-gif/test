@@ -9,6 +9,8 @@ document.getElementById('getWeather').onclick = () => {
     return; // 入力がない場合は処理を止める
   }
 
+  document.getElementById('weather').innerHTML = `<p>☁️ 天気を取得中...</p>`;
+
   // API呼び出し
   fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
     .then(res => res.json())
@@ -17,12 +19,19 @@ document.getElementById('getWeather').onclick = () => {
         document.getElementById('weather').innerHTML = "<p>天気情報が取得できませんでした</p>";
         return;
       }
-
+      const body = document.body;
       const weather = data.current_weather;
+      const weatherType = getWeatherType(weather.weathercode);
+      body.classList.remove("sunny", "cloudy", "rain", "snow", "nomal");
+      body.classList.add(weatherType);
+      const icon = getWeatherIcon(weatherType);
+
+      const advice = getClothingAdvice(weather.temperature, weather.windspeed);
       document.getElementById('weather').innerHTML =
-        `<p>気温: ${weather.temperature}°C</p>
+        `<p style="font-size:40px">${icon}</p>
+        <p>気温: ${weather.temperature}°C</p>
          <p>風速: ${weather.windspeed} km/h</p>
-         <p>天気コード: ${weather.weathercode}</p>`;
+         <p>着替えのアドバイス: ${advice}</p>`;
     })
     .catch(err => {
       console.error(err);
@@ -57,3 +66,42 @@ document.getElementById("search").onclick = () => {
         document.getElementById("result").innerText = "検索中にエラーが発生しました";
     });
 };
+
+function getClothingAdvice(temperature, windspeed) {
+    let advice = "";
+    if(temperature >= 25){
+        advice = "半袖でOK！";
+    } else if(temperature >= 15 && temperature < 25){
+        advice = "長袖がいいかも？！。";
+    } else if (temperature < 10){
+        advice = "コートがあるといいね";
+    } else {
+        advice = "ダウン着ないと！";
+    }
+    if(windspeed >= 15){
+        advice += " 風が強いから防風対策も忘れずに！";
+    }
+    return advice;
+}
+
+function getWeatherType(weathercode) {
+    if(weathercode === 0){
+        return "sunny";
+    } else if(weathercode >= 1 && weathercode <= 3){
+        return "cloudy";
+    }  else if(weathercode >= 61 && weathercode <= 67){
+        return "rain";
+    } else if(weathercode >= 71 && weathercode <= 77){
+        return "snow";
+    } else {
+        return "nomal";
+    }
+};
+
+function getWeatherIcon(type) {
+  if (type === "sunny") return "☀️";
+  if (type === "cloudy") return "☁️";
+  if (type === "rain") return "🌧️";
+  if (type === "snow") return "❄️";
+  return "🌤️";
+}
