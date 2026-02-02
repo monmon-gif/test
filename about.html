@@ -1,23 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>About</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>運試し | My Weather Site</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header style="position:relative; text-align:center; margin-top:150px;">
-    <h1>About This Site</h1>
+
+  <div class="clouds">
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+  </div>
+
+  <header style="text-align:center; margin-top:50px;">
+    <h1>My Weather Site</h1>
     <nav>
       <a href="index.html">Home</a> |
       <a href="weather.html">Weather</a> |
-      <a href="about.html">About</a>
+      <a href="about.html">運試し</a>
     </nav>
   </header>
 
-  <div style="text-align:center; margin-top:50px;">
-    <p>このサイトはGitHub Pagesで公開されているサンプル天気サイトです。</p>
-    <p>トップページでは雲が流れるアニメーションを楽しめます。</p>
+  <!-- Homeと同じカードを使う -->
+  <div class="home-card">
+    <p class="home-msg">🎲 ちんちろ運試し</p>
+    <p class="home-sub">今日の運をサイコロで引く</p>
+
+    <div class="result-box">
+      <div class="result-row">
+        <div class="result-label">出目</div>
+        <div id="dice" class="result-value">—</div>
+      </div>
+
+      <div class="result-main">
+        <div id="rank" class="rank">—</div>
+        <div id="titleText" class="titleText">結果がここに表示される</div>
+        <div id="msg" class="msg">ボタンを押して運試し！</div>
+      </div>
+    </div>
+
+    <button id="roll" class="home-btn">✨ 今日の運試し</button>
   </div>
+
+  <script src="js/chinchiro.js"></script>
 </body>
 </html>

@@ -1,54 +1,29 @@
+/* =========================
+  Base
+========================= */
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  min-height: 100vh;   /* height → min-height */
-  background: linear-gradient(to bottom, #87ceeb, #b0e0e6);
-  overflow-y: auto;    /* hidden をやめる */
+  min-height: 100vh;
+  overflow-y: auto;
   font-family: sans-serif;
-}
-
-@media (max-width: 600px) {
-  .weather-card {
-    width: 90%;
-    padding: 16px 20px;
-  }
-  .weather-temp {
-    font-size: 40px;
-  }
-  input, button {
-    width: 100%;
-    margin-bottom: 8px;
-  }
-}
-/* 晴れ */
-body.sunny {
-  background: linear-gradient(#87ceeb, #ffffff);
+  background: linear-gradient(to bottom, #87ceeb, #b0e0e6);
   color: #333;
 }
 
-/* 曇り */
-body.cloudy {
-  background: linear-gradient(#cfd9df, #e2ebf0);
-  color: #333;
-}
+/* =========================
+  Weather Themes (body class)
+========================= */
+body.sunny  { background: linear-gradient(#87ceeb, #ffffff); color: #333; }
+body.cloudy { background: linear-gradient(#cfd9df, #e2ebf0); color: #333; }
+body.rain   { background: linear-gradient(#4b5d67, #1c2b36); color: #fff; }
+body.snow   { background: linear-gradient(#eef2f3, #d9e4ea); color: #333; }
+body.nomal  { background: #f5f5f5; color: #333; }
 
-/* 雨 */
-body.rain {
-  background: linear-gradient(#4b5d67, #1c2b36);
-  color: #fff;
-}
-
-/* 雪 */
-body.snow {
-  background: linear-gradient(#eef2f3, #d9e4ea);
-  color: #333;
-}
-
-/* その他・初期 */
-body.nomal {
-  background: #f5f5f5;
-  color: #333;
-}
-
+/* =========================
+  Clouds (background)
+========================= */
 .clouds .cloud {
   position: absolute;
   background: #fff;
@@ -58,17 +33,29 @@ body.nomal {
   height: 60px;
 }
 
-.cloud1 { top: 50px; left: -250px; animation: moveCloud 60s linear infinite; }
+.cloud1 { top: 50px;  left: -250px; animation: moveCloud 60s linear infinite; }
 .cloud2 { top: 120px; left: -300px; width: 150px; height: 50px; animation: moveCloud 90s linear infinite; }
 .cloud3 { top: 200px; left: -200px; width: 180px; height: 55px; animation: moveCloud 75s linear infinite; }
 
 @keyframes moveCloud {
-  0% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(150vw); }
 }
 
+/* =========================
+  Header / Nav
+========================= */
+header {
+  text-align: center;
+  margin-top: 40px;
+}
+
+header h1 {
+  margin: 0 0 8px;
+}
+
 header nav a {
-  color: black;
+  color: currentColor;
   text-decoration: none;
   font-weight: bold;
   margin: 0 10px;
@@ -78,15 +65,109 @@ header nav a:hover {
   text-decoration: underline;
 }
 
+/* =========================
+  Page Title (2nd H1)
+  「住所から緯度・経度を検索」がデカい対策
+========================= */
+h1 {
+  font-size: 1.6rem;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 1.25rem; }
+}
+
+/* =========================
+  Form Area (ONLY here we style inputs/buttons)
+  ※全体 input,button 指定はしない
+========================= */
+.form {
+  width: min(640px, 86%);
+  margin: 16px auto 0;
+  text-align: center;
+}
+
+/* row: address + search / lat+lon+getWeather をまとめる */
+.form .row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+/* 共通見た目 */
+.form input[type="text"],
+.form button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+}
+
+/* 入力欄 */
+.form input[type="text"] {
+  background: rgba(255,255,255,0.92);
+  width: 240px;
+}
+
+/* ボタン */
+.form button {
+  background: #4da3ff;
+  color: #fff;
+  cursor: pointer;
+  width: 90px;
+}
+
+.form button:hover { opacity: 0.88; }
+
+/* 緯度経度は少しだけ小さめ */
+.form .row-3 input[type="text"] {
+  width: 130px;
+  font-size: 0.9rem;
+}
+
+.form .row-3 button {
+  width: 140px;
+}
+
+/* =========================
+  Result pills (address/lat/lon 表示用)
+  ※JSで .address .lat .lon に入れる想定
+========================= */
+.address,
+.lat,
+.lon{
+  background: rgba(255,255,255,0.92);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin: 10px auto;
+  width: min(640px, 86%);
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.address { word-break: break-word; }
+
+.lat, .lon{
+  width: fit-content;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: #1b6edc;
+}
+
+/* =========================
+  Weather Card
+========================= */
 .weather-card {
-  margin-top: 24px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
-  padding: 24px 32px;
+  margin: 24px auto 0;
   width: 320px;
-  margin: 40px auto 0;
+  padding: 18px 20px;
   text-align: center;
 
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
@@ -96,13 +177,13 @@ header nav a:hover {
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
   100% { transform: translateY(0); }
 }
 
 .weather-temp {
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 700;
   margin: 8px 0;
 }
@@ -115,91 +196,218 @@ header nav a:hover {
   font-size: 14px;
 }
 
-input, button {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-}
+/* temp color helpers */
+.weather-temp.cold { color: #3a7bd5; }
+.weather-temp.hot  { color: #e74c3c; }
 
-button {
-  background: #4da3ff;
-  color: white;
-  cursor: pointer;
-}
+/* card accent by theme */
+body.sunny .weather-card { border-top: 6px solid #ffd93d; }
+body.rain  .weather-card { border-top: 6px solid #4b5d67; }
+body.snow  .weather-card { border-top: 6px solid #bcdff1; }
 
-button:hover {
-  opacity: 0.85;
-}
+/* =========================
+  Responsive
+========================= */
+@media (max-width: 600px) {
+  .weather-card {
+    width: 90%;
+    padding: 14px 14px;
+  }
+  .weather-temp { font-size: 36px; }
 
-body.sunny .weather-card {
-  border-top: 6px solid #ffd93d;
-}
+  /* フォームをスマホで締める */
+  .form input[type="text"] {
+    width: min(70vw, 240px);
+    font-size: 0.9rem;
+    padding: 7px 9px;
+  }
+  .form button {
+    width: 84px;
+    font-size: 0.9rem;
+    padding: 7px 9px;
+  }
 
-body.rain .weather-card {
-  border-top: 6px solid #4b5d67;
-}
-
-body.snow .weather-card {
-  border-top: 6px solid #bcdff1;
-}
-
-.search-area {
-  margin-bottom: 32px;
-}
-
-.weather-temp.cold {
-  color: #3a7bd5;
-}
-
-.weather-temp.hot {
-  color: #e74c3c;
-}
-
-.latlon-area input {
-  width: 140px;
-  font-size: 12px;
-  color: #666;
-  background: rgba(255,255,255,0.7);
-}
-
-.latlon-area label {
-  font-size: 11px;
-  color: #888;
-  margin: 0 4px;
-}
-
-.latlon-area {
-  margin-top: 12px;
-  margin-bottom: 20px;
-}
-@media (max-width: 400px) {
-  .latlon-area input {
-    width: 100px;
+  .form .row-3 input[type="text"] {
+    width: min(42vw, 150px);
+  }
+  .form .row-3 button {
+    width: min(90vw, 260px);
   }
 }
 
-.address,
-.lat,
-.lon{
-  background: #fff;
-  border-radius: 14px;
-  padding: 10px 14px;
-  margin: 10px auto;
-  width: min(640px, 86%);
-  box-shadow: 0 10px 24px rgba(0,0,0,.12);
-  font-size: 14px;
-  line-height: 1.5;
+/* ===== Button color override ===== */
+button {
+  background: #4da3ff;   /* きれいな青 */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+
+button:hover {
+  background: #3a8de0;   /* 少し濃い青 */
+}
+
+.home-card {
+  margin: 60px auto 0;
+  width: min(520px, 86%);
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.9);
   text-align: center;
+  box-shadow: 0 12px 28px rgba(0,0,0,.15);
 }
 
-/* 住所が長いので折り返しやすく */
-.address{
-  word-break: break-word;
+.home-msg {
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
-/* 数字っぽさを出す（緯度/経度だけ） */
-.lat, .lon{
-  width: fit-content; /* 数字は小さめ幅にしたい場合 */
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  color: #1b6edc;
+.home-sub {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+/* Responsive for home card */
+@media (max-width: 600px) {
+  .home-card {
+    width: 90%;
+    padding: 16px;
+  }
+  .home-msg {
+    font-size: 1.2rem;
+  }
+  .home-sub {
+    font-size: 0.85rem;
+  }
+}  
+
+/* ===== app-like input card ===== */
+.app-card{
+  width: min(420px, 92%);
+  margin: 18px auto;
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 14px 30px rgba(0,0,0,.12);
+  backdrop-filter: blur(6px);
+}
+
+/* 1行 = ラベル + 入力 */
+.field{
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.field label{
+  font-size: 0.9rem;
+  color: rgba(0,0,0,.65);
+  text-align: right;
+}
+
+/* input / select 共通 */
+.field input,
+.field select{
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.95);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.field input:focus,
+.field select:focus{
+  border-color: rgba(77,163,255,.7);
+  box-shadow: 0 0 0 4px rgba(77,163,255,.18);
+}
+
+/* 数字入力は等幅で“アプリ感” */
+#latitude,
+#longitude{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* メインボタン */
+.primary-btn{
+  width: 100%;
+  height: 40px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #5ab0ff, #3d95ff);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(61,149,255,.25);
+}
+
+.primary-btn:active{
+  transform: translateY(1px);
+}
+
+/* スマホ：ラベルを上に */
+@media (max-width: 420px){
+  .field{
+    grid-template-columns: 1fr;
+  }
+  .field label{
+    text-align: left;
+    margin-bottom: 4px;
+  }
+}
+/* ===== chinchiro UI on About ===== */
+.result-box{
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.75);
+  box-shadow: 0 12px 26px rgba(0,0,0,.10);
+}
+
+.result-row{
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.result-label{
+  font-size: 12px;
+  color: rgba(0,0,0,.55);
+  text-align: right;
+}
+
+.result-value{
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.05);
+  font-weight: 700;
+}
+
+.result-main{
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.9);
+}
+
+.rank{ font-size: 18px; font-weight: 900; }
+.titleText{ margin-top: 4px; font-weight: 800; }
+.msg{ margin-top: 8px; font-size: 14px; color: rgba(0,0,0,.7); }
+
+.ghost-btn{
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.7);
+  cursor: pointer;
+  font-weight: 700;
 }

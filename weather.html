@@ -19,18 +19,47 @@
       <nav>
         <a href="index.html">Home</a> |
         <a href="weather.html">Weather</a> |
-        <a href="about.html">About</a>
+        <a href="about.html">運試し</a>
       </nav>
     </header>
     <h1>住所から緯度・経度を検索</h1>
-    <input type="text" id="address" placeholder="住所を入力してください">
-    <button id="search">検索</button>
+
+    <div class="weather-controls app-card">
+      <div class="field">
+        <label for="address">住所</label>
+        <input type="text" id="address" placeholder="例：東京都千代田区">
+      </div>
+
+      <button id="search" class="primary-btn">検索</button>
+    </div>
 
     <div id="result"></div>
-      <input type="text" id="latitude" placeholder="緯度を入力">
-      <input type="text" id="longitude" placeholder="経度を入力">
-      <button id="getWeather">天気を取得</button>
-      <div id="weather" class="weather-card" style="margin-top:20px;"></div>
+
+    <div class="latlon-area app-card">
+      <div class="field">
+        <label for="latitude">緯度</label>
+        <input type="text" id="latitude" placeholder="例：35.68">
+      </div>
+
+      <div class="field">
+        <label for="longitude">経度</label>
+        <input type="text" id="longitude" placeholder="例：139.76">
+      </div>
+
+      <div class="field">
+        <label for="date">日にち</label>
+        <select id="date"></select>
+      </div>
+
+      <div class="field">
+        <label for="time">時間</label>
+        <select id="time"></select>
+      </div>
+
+      <button id="getWeather" class="primary-btn">天気を取得</button>
+    </div>
+
+    <div id="weather" class="weather-card" style="margin-top:20px;"></div>
   </div>
 
   <script src="js/weather.js"></script>
