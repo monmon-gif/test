@@ -1,10 +1,11 @@
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;   /* height → min-height */
   background: linear-gradient(to bottom, #87ceeb, #b0e0e6);
-  overflow: hidden;
+  overflow-y: auto;    /* hidden をやめる */
   font-family: sans-serif;
 }
+
 @media (max-width: 600px) {
   .weather-card {
     width: 90%;
@@ -202,4 +203,3 @@ body.snow .weather-card {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   color: #1b6edc;
 }
-
