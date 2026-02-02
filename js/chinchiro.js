@@ -114,3 +114,33 @@ function judgeLuck(dice) {
     message: "今日は無理せず様子見。準備と整理が運を呼ぶ。",
   };
 }
+
+rollBtn.onclick = () => {
+  rollBtn.disabled = true;
+
+  // 振ってる演出開始
+  diceEl.classList.add("rolling");
+
+  let ticks = 0;
+  const anim = setInterval(() => {
+    ticks++;
+    diceEl.textContent = rollDice().join("・");
+
+    if (ticks >= 8) {
+      clearInterval(anim);
+
+      const dice = rollDice();
+      diceEl.textContent = dice.join("・");
+
+      // 振ってる演出終了
+      diceEl.classList.remove("rolling");
+      rollBtn.disabled = false;
+    }
+  }, 80);
+};
+
+function rollDice() {
+  return Array.from({ length: 3 }, () =>
+    Math.floor(Math.random() * 6) + 1
+  );
+}
