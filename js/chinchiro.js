@@ -9,17 +9,21 @@ rollBtn.onclick = () => {
   rollBtn.disabled = true;
   rollBtn.textContent = "振ってる…";
 
-  // ちょい演出：数回チラつかせる
+  // 振ってる演出開始（CSSがあるなら効く）
+  diceEl.classList.add("rolling");
+
   let ticks = 0;
   const anim = setInterval(() => {
     ticks++;
-    diceEl.textContent = `出目：${rollDice().join("・")}`;
+
+    // 演出中は適当に表示（判定はしない）
+    diceEl.textContent = rollDice().join("・");
 
     if (ticks >= 8) {
       clearInterval(anim);
 
-      // ★ 1回だけ振って、そのまま結果にする
-      const dice = rollDice();
+      // ★確定は1回だけ
+      const dice = rollDice().sort((a, b) => a - b);
       const judgeResult = judgeLuck(dice);
 
       diceEl.textContent = dice.join("・");
@@ -27,6 +31,7 @@ rollBtn.onclick = () => {
       titleEl.textContent = judgeResult.title;
       msgEl.textContent = judgeResult.message;
 
+      diceEl.classList.remove("rolling");
       rollBtn.disabled = false;
       rollBtn.innerHTML = `<span class="spark">✨</span> 今日の運試し`;
     }
@@ -34,8 +39,7 @@ rollBtn.onclick = () => {
 };
 
 function rollDice() {
-  return Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1)
-    .sort((a, b) => a - b);
+  return Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
 }
 
 function judgeLuck(dice) {
@@ -106,41 +110,11 @@ function judgeLuck(dice) {
     return { type: "me_ari", ...map[point] };
   }
 
-  // ★ 役なし（目なし） ← 今回ここも結果として出る
+  // 役なし（目なし）
   return {
     type: "no_hand",
     rank: "⚪ 役なし",
     title: "目なし",
     message: "今日は無理せず様子見。準備と整理が運を呼ぶ。",
   };
-}
-
-rollBtn.onclick = () => {
-  rollBtn.disabled = true;
-
-  // 振ってる演出開始
-  diceEl.classList.add("rolling");
-
-  let ticks = 0;
-  const anim = setInterval(() => {
-    ticks++;
-    diceEl.textContent = rollDice().join("・");
-
-    if (ticks >= 8) {
-      clearInterval(anim);
-
-      const dice = rollDice();
-      diceEl.textContent = dice.join("・");
-
-      // 振ってる演出終了
-      diceEl.classList.remove("rolling");
-      rollBtn.disabled = false;
-    }
-  }, 80);
-};
-
-function rollDice() {
-  return Array.from({ length: 3 }, () =>
-    Math.floor(Math.random() * 6) + 1
-  );
 }
