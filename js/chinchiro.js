@@ -5,8 +5,6 @@ const rankEl = document.getElementById("rank");
 const titleEl = document.getElementById("titleText");
 const msgEl = document.getElementById("msg");
 
-const pad2 = (n) => String(n).padStart(2, "0");
-
 rollBtn.onclick = () => {
   rollBtn.disabled = true;
   rollBtn.textContent = "振ってる…";
@@ -16,12 +14,15 @@ rollBtn.onclick = () => {
   const anim = setInterval(() => {
     ticks++;
     diceEl.textContent = `出目：${rollDice().join("・")}`;
+
     if (ticks >= 8) {
       clearInterval(anim);
 
-      const { dice, judgeResult, rerolls } = rollUntilResult();
-      diceEl.textContent = `${dice.join("・")}${rerolls ? `（振り直し${rerolls}回）` : ""}`;
+      // ★ 1回だけ振って、そのまま結果にする
+      const dice = rollDice();
+      const judgeResult = judgeLuck(dice);
 
+      diceEl.textContent = dice.join("・");
       rankEl.textContent = judgeResult.rank;
       titleEl.textContent = judgeResult.title;
       msgEl.textContent = judgeResult.message;
@@ -32,32 +33,6 @@ rollBtn.onclick = () => {
   }, 80);
 };
 
-function rollUntilResult(maxReroll = 30) {
-  let rerolls = 0;
-
-  while (rerolls <= maxReroll) {
-    const dice = rollDice();
-    const judgeResult = judgeLuck(dice);
-
-    if (judgeResult.type !== "no_hand") {
-      return { dice, judgeResult, rerolls };
-    }
-    rerolls++;
-  }
-
-  const dice = rollDice();
-  return {
-    dice,
-    judgeResult: {
-      type: "forced",
-      rank: "🟡 中吉",
-      title: "結果が出ない日もある",
-      message: "目なしが続いたので強制確定。今日は無理せずコツコツが吉。",
-    },
-    rerolls,
-  };
-}
-
 function rollDice() {
   return Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1)
     .sort((a, b) => a - b);
@@ -66,6 +41,7 @@ function rollDice() {
 function judgeLuck(dice) {
   const [a, b, c] = dice;
 
+  // ピンゾロ
   if (a === 1 && b === 1 && c === 1) {
     return {
       type: "pinzoro",
@@ -75,6 +51,7 @@ function judgeLuck(dice) {
     };
   }
 
+  // ヒフミ
   if (a === 1 && b === 2 && c === 3) {
     return {
       type: "hifumi",
@@ -84,6 +61,7 @@ function judgeLuck(dice) {
     };
   }
 
+  // シゴロ
   if (a === 4 && b === 5 && c === 6) {
     return {
       type: "shigoro",
@@ -93,6 +71,7 @@ function judgeLuck(dice) {
     };
   }
 
+  // ゾロ目
   if (a === b && b === c) {
     const ranks = {
       2: "🟣 中吉",
@@ -109,6 +88,7 @@ function judgeLuck(dice) {
     };
   }
 
+  // 目あり（2個同じ）
   let point = null;
   if (a === b) point = c;
   else if (b === c) point = a;
@@ -126,5 +106,11 @@ function judgeLuck(dice) {
     return { type: "me_ari", ...map[point] };
   }
 
-  return { type: "no_hand", rank: "🔄", title: "目なし", message: "振り直し" };
+  // ★ 役なし（目なし） ← 今回ここも結果として出る
+  return {
+    type: "no_hand",
+    rank: "⚪ 役なし",
+    title: "目なし",
+    message: "今日は無理せず様子見。準備と整理が運を呼ぶ。",
+  };
 }
