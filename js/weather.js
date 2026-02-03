@@ -51,6 +51,7 @@ document.getElementById("getWeather").onclick = () => {
       const week = weeks[selected.getDay()];
       const hour = selected.getHours();
       const accuracy = getAccuracy(day);
+      const lucky = getLuckyNumber(1, 100);
       weatherEl.innerHTML = `
         <p style="font-size:40px">${icon}</p>
         <p>${address} ${month}月${day}日(${week}) ${hour}時<br>の天気情報</p>
@@ -58,6 +59,7 @@ document.getElementById("getWeather").onclick = () => {
         <p>風速: ${weather.windspeed} km/h</p>
         <p>天気の精度: ${accuracy}</p>
         <p>着替えのアドバイス: <br>${advice}</p>
+        <p>ラッキーナンバー: <strong>${lucky}</strong></p>
       `;
     })
     .catch(err => {
@@ -122,8 +124,11 @@ document.getElementById("search").onclick = () => {
 // ================================
 function getClothingAdvice(temperature, windspeed) {
   let advice = "";
-
-  if (temperature >= 25) {
+    if (temperature >= 40) {
+    advice = "🔥 熱中症注意！服、着なくても可";
+  } else if (temperature >= 30) {
+    advice = "半袖でOK！タンクトップでもいけるかも？！";
+  } else if (temperature >= 25) {
     advice = "半袖でOK！";
   } else if (temperature >= 15) {
     advice = "長袖がいいかも？！";
@@ -215,3 +220,9 @@ function buildTimeOptions() {
 buildDateOptions(7);  // 7日先まで（必要なら16に）
 buildTimeOptions();
 
+// ================================
+// ラッキーナンバー取得
+// ================================
+function getLuckyNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
